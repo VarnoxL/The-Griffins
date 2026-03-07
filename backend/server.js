@@ -16,13 +16,13 @@ app.use(cors());
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  res.send("RoastMyCode backend running ");
+  res.send("RoastMyCode backend running");
 });
 
 app.post("/roast", async (req, res) => {
-  try {
-    const { code, level = "mild", language = "unknown" } = req.body;
+  const { code, level = "mild", language = "unknown" } = req.body;
 
+  try {
     if (!code || !code.trim()) {
       return res.status(400).json({ error: "No code provided" });
     }
@@ -38,21 +38,24 @@ The programming language is: ${language}.
 
 Roast the code in a ${roastStyle} way, but do not use profanity or anything hateful.
 
-Respond in this exact format:
+Return your answer as valid JSON in exactly this format:
+{
+  "score": number,
+  "roast": "string",
+  "Summary": "string",
+  "WhatWrongWithCode": "string",
+  "Improvement": "string"
+}
 
-ROAST:
-<funny roast here>
+Rules:
+- score must be an integer from 1 to 10
+- 1 means terrible code that doesn't work at all
+- 10 means excellent code
+- keep the roast funny but helpful
+- do not include markdown
+- do not include code fences
 
-WHAT IT DOES:
-<brief explanation>
-
-WHAT IS WRONG:
-<main issues>
-
-HOW TO IMPROVE:
-<clear improvements>
-
-Code:
+Code to roast:
 ${code}
 `;
 
@@ -61,17 +64,40 @@ ${code}
       input: prompt,
     });
 
+    const text = response.output_text;
+
+    let parsed;
+    try {
+      parsed = JSON.parse(text);
+    } catch {
+      parsed = {
+        score: 5,
+        roast: "The AI roasted the code so hard it forgot the JSON format 😭",
+        Summary: "The response could not be parsed.",
+        WhatWrongWithCode: "The AI returned invalid JSON.",
+        Improvement: "Try the request again."
+      };
+    }
+
     res.json({
-      roast: response.output_text,
+      score: parsed.score,
+      roast: parsed.roast,
+      summary: parsed.Summary,
+      whatWrongWithCode: parsed.WhatWrongWithCode,
+      improvement: parsed.Improvement,
       level,
       language,
     });
   } catch (error) {
     console.error("FULL OPENAI ERROR:", error);
     res.json({
+      score: 5,
       roast: "Even the AI gave up looking at this code 😭",
-      level: "unknown",
-      language: "unknown"
+      summary: "The code is so bad that it can't be summarized.",
+      whatWrongWithCode: "Something failed during analysis.",
+      improvement: "Try again in a moment.",
+      level,
+      language
     });
   }
 });
