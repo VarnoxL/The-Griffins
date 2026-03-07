@@ -21,43 +21,58 @@ app.get("/", (req, res) => {
 
 app.post("/roast", async (req, res) => {
   try {
-    const { code } = req.body;
+    const { code, level = "mild", language = "unknown" } = req.body;
 
-    if (!code) {
+    if (!code || !code.trim()) {
       return res.status(400).json({ error: "No code provided" });
     }
+
+    let roastStyle = "light and playful";
+    if (level === "medium") roastStyle = "sarcastic but friendly";
+    if (level === "brutal") roastStyle = "very sarcastic but still helpful";
 
     const prompt = `
 You are a funny and helpful code reviewer.
 
-Roast the code in a playful way (example: "Bro this code looks like it was written during a caffeine overdose ☕")
-However, also provide constructive feedback.
+The programming language is: ${language}.
 
-1. Roast the code playfully
-2. What is wrong with the code?
-3. How can it be improved?
+Roast the code in a ${roastStyle} way, but do not use profanity or anything hateful.
 
-Do NOT use profanity. Keep it fun and helpful.
+Respond in this exact format:
+
+ROAST:
+<funny roast here>
+
+WHAT IT DOES:
+<brief explanation>
+
+WHAT IS WRONG:
+<main issues>
+
+HOW TO IMPROVE:
+<clear improvements>
 
 Code:
 ${code}
 `;
 
-    const response = await client.chat.completions.create({
+    const response = await client.responses.create({
       model: "gpt-5-mini",
-      messages: [
-        { role: "system", content: "You are a playful coding reviewer." },
-        { role: "user", content: prompt }
-      ]
+      input: prompt,
     });
 
     res.json({
-      roast: response.choices[0].message.content
+      roast: response.output_text,
+      level,
+      language,
     });
-
   } catch (error) {
-    console.error("Error generating roast:", error);
-    res.status(500).json({ error: "Failed to generate roast" });
+    console.error("FULL OPENAI ERROR:", error);
+    res.json({
+      roast: "Even the AI gave up looking at this code 😭",
+      level: "unknown",
+      language: "unknown"
+    });
   }
 });
 
