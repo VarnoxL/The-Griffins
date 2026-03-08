@@ -54,6 +54,8 @@ Rules:
 - keep the roast funny but helpful
 - do not include markdown
 - do not include code fences
+- when explaining what's wrong with the code, be specific about issues and not just general statements but 
+also keep it concise and easy to understand for new developers and same for improvement section. 
 
 Code to roast:
 ${code}
