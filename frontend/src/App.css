@@ -8,10 +8,37 @@
   color: white;
   font-family: Arial, sans-serif;
 }
-.App {
+
+.subtitle {
   text-align: center;
-  margin-top: 80px;
-  color: rgb(0, 0, 0);
+  font-size: 22px;
+  color: rgba(255, 255, 255, 0.75);
+  margin-top: -10px;
+  margin-bottom: 40px;
+  letter-spacing: 0.5px;
+  color: #ff4d00;
+  font-weight: 600;
+  font-style: italic;
+}
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: radial-gradient(circle at top, #1e293b, #020617);
+  min-height: 100vh;
+}
+
+.App h1 {
+  font-size: 60px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-bottom: 8px;
+  justify-content: center;
+  display: flex; 
+  color: #f54b03;
+  text-shadow: 
+    0 0 10px rgba(255, 77, 0, 0.6),
+    0 0 20px rgba(255, 77, 0, 0.4),
+    0 0 40px rgba(255, 77, 0, 0.3);
 }
 
 
@@ -29,20 +56,23 @@ textarea {
 
 button {
   margin-top: 20px;
-  padding: 14px 28px;
-  border: none;
+  padding: 14px 32px;
   border-radius: 10px;
+  border: none;
+
   background: linear-gradient(135deg, #ff6a00, #ff3d00);
   color: white;
+
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 600;
+
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 80, 0, 0.5);
+  box-shadow: 0 8px 20px rgba(255,100,0,0.4);
 }
 
 button:active {
