@@ -92,7 +92,7 @@ ${code}
     });
   } catch (error) {
     console.error("FULL OPENAI ERROR:", error);
-    res.json({
+    res.status(500).json({
       score: 5,
       roast: "Even the AI gave up looking at this code 😭",
       summary: "The code is so bad that it can't be summarized.",
