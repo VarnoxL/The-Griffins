@@ -1,0 +1,29 @@
+{
+  "name": "the-griffins",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VarnoxL/The-Griffins.git"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VarnoxL/The-Griffins/issues"
+  },
+  "homepage": "https://github.com/VarnoxL/The-Griffins#readme",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^4.22.1",
+    "nodemon": "^3.1.14",
+    "openai": "^6.27.0"
+  }
+}
