@@ -13,43 +13,43 @@ function TextAreaExample() {
   };
 
   const submitCode = async () => {
-    if (!essay.trim()) {
-      alert("Paste some code first.");
+  if (!essay.trim()) {
+    alert("Paste some code first.");
+    return;
+  }
+
+  setIsLoading(true);
+
+  try {
+    const response = await fetch("https://the-griffins-1.onrender.com/roast", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        code: essay,
+        language,
+        level
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(data.error || "Failed to roast code.");
       return;
     }
 
-    setIsLoading(true);
+    console.log(data);
+    setResult(data);
 
-    try {
-      const response = await fetch("http://localhost:5533/roast", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          code: essay,
-          language,
-          level
-        })
-      });
-
-      const data = await response.json();
-
-if (!response.ok) {
-      alert(data.error || "Failed to roast code.");
-  return;
-}
-
-console.log(data);
-setResult(data);
-
-    } catch (error) {
-      console.error(error);
-      alert("Failed to reach backend.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  } catch (error) {
+    console.error(error);
+    alert("Failed to reach backend.");
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <div className="TextBox">
